@@ -20,7 +20,10 @@ public class Worker : BackgroundService
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Starting discord bot");
+        
         var botToken = Environment.GetEnvironmentVariable("DISCBOT_TOKEN");
+        if (botToken == null) 
+            throw new Exception("DISCBOT_TOKEN environment variable was not found.");
         
         _client.Log += LogAsync;
     
@@ -48,9 +51,9 @@ public class Worker : BackgroundService
         _logger.LogInformation("Discord bot stopping");
     }
 
-    private static Task LogAsync(LogMessage msg)
+    private Task LogAsync(LogMessage msg)
     {
-        Console.WriteLine(msg);
+        _logger.LogInformation(msg.Message, DateTimeOffset.Now);
         return Task.CompletedTask;
     }
 }
