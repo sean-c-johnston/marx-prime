@@ -21,6 +21,8 @@ public class Worker : BackgroundService
     {
         _logger.LogInformation("Starting discord bot");
         
+        
+        
         var botToken = Environment.GetEnvironmentVariable("DISCBOT_TOKEN");
         if (botToken == null) 
             throw new Exception("DISCBOT_TOKEN environment variable was not found.");

@@ -8,17 +8,19 @@ public class CommandHandler
 {
     private readonly DiscordSocketClient _client;
     private readonly CommandService _commands;
+    private readonly IServiceProvider _services;
 
-    public CommandHandler(DiscordSocketClient client, CommandService commands)
+    public CommandHandler(DiscordSocketClient client, CommandService commands, IServiceProvider services)
     {
         _client = client;
         _commands = commands;
+        _services = services;
     }
 
     public async Task RegisterCommandsAsync()
     {
         _client.MessageReceived += HandleCommandAsync;
-        await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), null);
+        await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
     }
     
     public async Task DeregisterCommandsAsync()
@@ -39,7 +41,7 @@ public class CommandHandler
         if (!ShouldHandleMessage(msg, ref prefixIndex)) return;
 
         var context = new SocketCommandContext(_client, msg);
-        await _commands.ExecuteAsync(context, prefixIndex, null);
+        await _commands.ExecuteAsync(context, prefixIndex, _services);
     }
 
     private bool ShouldHandleMessage(SocketUserMessage msg, ref int i)
