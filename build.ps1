@@ -1,1 +1,0 @@
-docker build .\MarxPrime.App\ -t marx-image:latest
