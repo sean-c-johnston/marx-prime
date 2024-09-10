@@ -18,6 +18,13 @@ public class GarfieldModule : ModuleBase<SocketCommandContext>
     [Summary("Garfield")]
     public async Task GarfieldMeme([Remainder] string? day = null)
     {
+        var wtcCheck = DateTime.Now
+        if (wtcCheck.Month == 9 && wtcCheck.Day == 11) 
+        {
+            await Context.Channel.SendFileAsync($"{BasePath}/911.png", "meme");
+        }
+        else
+        {
         var dayOfWeek = _dayService.GetCurrentDayOfWeek();
 
         if (day != null) dayOfWeek = _dayService.GetDayOfWeek(day);
@@ -35,5 +42,6 @@ public class GarfieldModule : ModuleBase<SocketCommandContext>
         };
         
         await response;
+        }
     }
 }
